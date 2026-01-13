@@ -1,0 +1,84 @@
+using System;
+
+class StudentReportCard
+{
+    static void Main()
+    {
+        Console.Write("Enter Total Students : ");
+        int totalStudents = ReadPositiveInt();
+
+        int[,] marks = new int[totalStudents, 4];
+        string[] names = new string[totalStudents];
+
+        for (int i = 0; i < totalStudents; i++)
+        {
+            Console.WriteLine("*********************************************");
+            Console.Write("Enter Student Name : ");
+            names[i] = Console.ReadLine();
+
+            marks[i, 0] = ReadMarks("Enter English Marks (Out Of 100) : ");
+            marks[i, 1] = ReadMarks("Enter Math Marks (Out Of 100) : ");
+            marks[i, 2] = ReadMarks("Enter Computer Marks (Out Of 100) : ");
+
+            marks[i, 3] = marks[i, 0] + marks[i, 1] + marks[i, 2];
+        }
+
+        for (int i = 0; i < totalStudents - 1; i++)
+        {
+            for (int j = i + 1; j < totalStudents; j++)
+            {
+                if (marks[j, 3] > marks[i, 3])
+                {
+
+                    for (int k = 0; k < 4; k++)
+                    {
+                        int temp = marks[i, k];
+                        marks[i, k] = marks[j, k];
+                        marks[j, k] = temp;
+                    }
+
+                    string tempName = names[i];
+                    names[i] = names[j];
+                    names[j] = tempName;
+                }
+            }
+        }
+
+        Console.WriteLine("****************Report Card*******************");
+
+        for (int i = 0; i < totalStudents; i++)
+        {
+            Console.WriteLine("****************************************");
+            Console.WriteLine($"Student Name: {names[i]}, Position: {i + 1}, Total: {marks[i, 3]}/300");
+        }
+
+        Console.WriteLine("****************************************");
+    }
+
+    static int ReadMarks(string message)
+    {
+        int value;
+        while (true)
+        {
+            Console.Write(message);
+            if (int.TryParse(Console.ReadLine(), out value) && value >= 0 && value <= 100)
+            {
+                return value;
+            }
+            Console.WriteLine("Invalid input! Please enter a number between 0 and 100.");
+        }
+    }
+
+    static int ReadPositiveInt()
+    {
+        int value;
+        while (true)
+        {
+            if (int.TryParse(Console.ReadLine(), out value) && value > 0)
+            {
+                return value;
+            }
+            Console.Write("Invalid input! Enter a positive number: ");
+        }
+    }
+}
